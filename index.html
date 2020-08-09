@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <title>MS Center for Jusice</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css" rel="stylesheet" />
+    <script async defer src="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js"></script>
+
+    <style>
+        body { margin:0; padding:0; }
+
+        h2,
+h3 {
+  margin: 10px;
+  font-size: 1.2em;
+}
+
+h3 {
+  font-size: 1em;
+}
+
+p {
+  font-size: 0.85em;
+  margin: 10px;
+  text-align: left;
+}
+
+      #map { position:absolute; top:0; bottom:0; width:100%; z-index:-1;}
+
+      /**
+* Set rules for how the map overlays
+* (title box) will be displayed on the page. */
+.map-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.8);
+  margin-right: 50px;
+  margin-bottom: 20px;
+  font-family: Arial, sans-serif;
+  overflow: auto;
+  border-radius: 3px;
+}
+
+.fcc-legend {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.8);
+  margin-left: 20px;
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+  overflow: auto;
+  border-radius: 3px;
+}
+
+#features {
+  top: 0;
+  height: 200px;
+  margin-top: 20px;
+  width: 350px;
+}
+ /* Popup styling */
+
+ .mapboxgl-popup {
+      padding-bottom: 5px;
+    }
+
+        .mapboxgl-popup-content {
+        font: 400 15px/22px 'Source Sans Pro', 'Helvetica Neue', Sans-serif;
+        padding: 0;
+        width: 300px;
+              max-height: 250px;
+              overflow: auto;
+      }
+
+        .mapboxgl-popup-content-wrapper {
+          padding: 1%;
+        }
+
+        .mapboxgl-popup-content h3 {
+        background: #4C305A;
+        color: #fff;
+        margin: 0;
+        display: block;
+        padding: 10px;
+        border-radius: 3px 3px 0 0;
+        font-weight: 600;
+        margin-top: 0px;
+      }
+
+    .mapboxgl-popup-content h4 {
+        margin: 0;
+        display: block;
+        padding: 5px;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+    .mapboxgl-container {
+      cursor: pointer;
+    }
+
+    .mapboxgl-popup-content div {
+        padding: 10px;
+      }
+
+    .mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
+      margin-top: 3px;
+    }
+
+    .mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
+      border-bottom-color: #47d61b;
+    }
+
+    </style>
+  </head>
+
+</style>
+
+<body>
+    <div id="map"></div>
+    <div class="map-overlay" id="features">
+      <h2>Distance learning vulnerability</h2>
+      <p>Click on a school district for details on enrollment, school lunch program participation, and average (median) number of internet providers across the district (minimum speed 23/5 Mbps).</p><p>Zoom in to see census block data on internet provider availability from FCC data - explore in more detail at the <a href="https://broadbandmap.fcc.gov/#/"target="_blank">FCC Broadband map.</a></p><p>Sources:</p>
+    </div>
+    <div class='fcc-legend'>
+        <strong class='block mb6'>Census block details</strong>
+        <div class='grid mb6'>
+          <div class='col bg-green-faint h12'></div>
+          <div class='col bg-green-light h12'></div>
+          <div class='col bg-green h12'></div>
+          <div class='col bg-green-dark h12'></div>
+        </div>
+        <div class='grid txt-xs'>
+          <div class='col align-center'>0</div>
+          <div class='col align-center'>25</div>
+          <div class='col align-center'>50</div>
+          <div class='col align-center'>75</div>
+        </div>
+      </div>
+    <div class="map-overlay" id="legend"></div>
+
+    <script>
+      // define access token
+      mapboxgl.accessToken = 'pk.eyJ1IjoibWFyZW5hYiIsImEiOiJjam42cXNpNjIwMmxlM3lwYmxuZXAwdzh3In0.gPwDgUG31QDzSFg2Gohmtw';
+
+      //create map
+      var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/marenab/ckdgscbe402al1imcc49vm9i3' // map style URL from Mapbox Studio
+      });
+
+      // wait for map to load before adjusting it
+      map.on('load', function() {
+        // make a pointer cursor
+        map.getCanvas().style.cursor = 'default';
+
+        // set map bounds to the continental US
+        map.fitBounds([
+          [-92.08740234375, 35.34425514918409],
+          [-87.374267578125, 29.23847708592805]
+        ]);
+
+        // make a pointer cursor
+        map.getCanvas().style.cursor = 'default';
+
+        // define layer names
+        var layers = [
+          '0-10',
+          '10-20',
+          '20-50',
+          '50-100',
+          '100-200',
+          '200-500',
+          '500-1000',
+          '1000+'
+        ];
+        var colors = [
+          '#FFEDA0',
+          '#FED976',
+          '#FEB24C',
+          '#FD8D3C',
+          '#FC4E2A',
+          '#E31A1C',
+          '#BD0026',
+          '#800026'
+        ];
+
+        // create legend
+        for (i = 0; i < layers.length; i++) {
+          var layer = layers[i];
+          var color = colors[i];
+          var item = document.createElement('div');
+          var key = document.createElement('span');
+          key.className = 'legend-key';
+          key.style.backgroundColor = color;
+
+          var value = document.createElement('span');
+          value.innerHTML = layer;
+          item.appendChild(key);
+          item.appendChild(value);
+          legend.appendChild(item);
+        }
+    });
+
+        // Add pop-ups for polygon layer from style
+
+        map.on('load', function() {
+        // Add a source for the polygons.
+        map.addSource('districts', {
+        'type': 'vector',
+        'url': 'mapbox://marenab.5jdlfjkx'
+        });
+        
+        // Add a layer.
+        map.addLayer({
+        'id': 'details',
+        'type': 'fill',
+        'source': 'districts',
+        'source-layer':'MS-bivar-9g2fny',
+        'paint': {
+        'fill-color': "#fec016",
+        'fill-opacity': 0,
+        'fill-outline-color': "#fec016"
+        }
+        });
+        
+        // When a click event occurs on a feature in the layer, open a popup at the
+        // location of the click, with description HTML from its properties.
+        map.on('click', 'details', function(e) {
+        new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML('<h3>' + e.features[0].properties.NAME + '</h3><p>Percent of students enrolled in lunch program: ' + e.features[0].properties.prcnt_enrolled_lunch + '</p><p>Median number of internet providers (25/3 Mbps minimum): ' + e.features[0].properties.Count_providers_253min_median + '</p><p>Enrollment: ' + e.features[0].properties.Enrollment + '</p>')
+        .addTo(map);
+        });
+        
+        // Change the cursor to a pointer when the mouse is over the states layer.
+        map.on('mouseenter', 'details', function() {
+        map.getCanvas().style.cursor = 'pointer';
+        });
+        
+        // Change it back to a pointer when it leaves.
+        map.on('mouseleave', 'details', function() {
+        map.getCanvas().style.cursor = '';
+        });
+        });
+
+        // Add zoom and rotation controls to the map.
+        map.addControl(new mapboxgl.NavigationControl());
+  </script>
+  </body>
+</html>
