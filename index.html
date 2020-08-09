@@ -36,9 +36,9 @@ p {
 .map-overlay {
   position: absolute;
   bottom: 0;
-  right: 0;
+  left: 0;
   background: rgba(255, 255, 255, 0.8);
-  margin-right: 50px;
+  margin-left: 10px;
   margin-bottom: 20px;
   font-family: Arial, sans-serif;
   overflow: auto;
@@ -47,11 +47,23 @@ p {
 
 .fcc-legend {
   position: absolute;
-  top: 0;
-  left: 0;
+  bottom: 0;
+  right: 0;
   background: rgba(255, 255, 255, 0.8);
-  margin-left: 20px;
-  margin-top: 20px;
+  margin-right: 20px;
+  margin-bottom: 30px;
+  font-family: Arial, sans-serif;
+  overflow: auto;
+  border-radius: 3px;
+}
+
+.bivar-legend {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.8);
+  margin-right: 20px;
+  margin-top: 110px;
   font-family: Arial, sans-serif;
   overflow: auto;
   border-radius: 3px;
@@ -59,9 +71,9 @@ p {
 
 #features {
   top: 0;
-  height: 200px;
+  height: 300px;
   margin-top: 20px;
-  width: 350px;
+  width: 250px;
 }
  /* Popup styling */
 
@@ -82,7 +94,7 @@ p {
         }
 
         .mapboxgl-popup-content h3 {
-        background: #4C305A;
+        background: #404040;
         color: #fff;
         margin: 0;
         display: block;
@@ -128,21 +140,11 @@ p {
       <p>Click on a school district for details on enrollment, school lunch program participation, and average (median) number of internet providers across the district (minimum speed 23/5 Mbps).</p><p>Zoom in to see census block data on internet provider availability from FCC data - explore in more detail at the <a href="https://broadbandmap.fcc.gov/#/"target="_blank">FCC Broadband map.</a></p><p>Sources:</p>
     </div>
     <div class='fcc-legend'>
-        <strong class='block mb6'>Census block details</strong>
-        <div class='grid mb6'>
-          <div class='col bg-green-faint h12'></div>
-          <div class='col bg-green-light h12'></div>
-          <div class='col bg-green h12'></div>
-          <div class='col bg-green-dark h12'></div>
-        </div>
-        <div class='grid txt-xs'>
-          <div class='col align-center'>0</div>
-          <div class='col align-center'>25</div>
-          <div class='col align-center'>50</div>
-          <div class='col align-center'>75</div>
-        </div>
+        <p><img src = "FCClegend.png"/></p>
       </div>
-    <div class="map-overlay" id="legend"></div>
+    <div class='bivar-legend'>
+        <p><img src = "bivar-legend.png"/></p>
+      </div>
 
     <script>
       // define access token
@@ -167,44 +169,6 @@ p {
 
         // make a pointer cursor
         map.getCanvas().style.cursor = 'default';
-
-        // define layer names
-        var layers = [
-          '0-10',
-          '10-20',
-          '20-50',
-          '50-100',
-          '100-200',
-          '200-500',
-          '500-1000',
-          '1000+'
-        ];
-        var colors = [
-          '#FFEDA0',
-          '#FED976',
-          '#FEB24C',
-          '#FD8D3C',
-          '#FC4E2A',
-          '#E31A1C',
-          '#BD0026',
-          '#800026'
-        ];
-
-        // create legend
-        for (i = 0; i < layers.length; i++) {
-          var layer = layers[i];
-          var color = colors[i];
-          var item = document.createElement('div');
-          var key = document.createElement('span');
-          key.className = 'legend-key';
-          key.style.backgroundColor = color;
-
-          var value = document.createElement('span');
-          value.innerHTML = layer;
-          item.appendChild(key);
-          item.appendChild(value);
-          legend.appendChild(item);
-        }
     });
 
         // Add pop-ups for polygon layer from style
