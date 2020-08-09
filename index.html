@@ -234,7 +234,7 @@ p {
         map.on('click', 'details', function(e) {
         new mapboxgl.Popup()
         .setLngLat(e.lngLat)
-        .setHTML('<h3>' + e.features[0].properties.NAME + '</h3><p>Percent of students enrolled in lunch program: ' + e.features[0].properties.prcnt_enrolled_lunch + '</p><p>Median number of internet providers (25/3 Mbps minimum): ' + e.features[0].properties.Count_providers_253min_median + '</p><p>Enrollment: ' + e.features[0].properties.Enrollment + '</p>')
+        .setHTML('<h3>' + e.features[0].properties.NAME + '</h3><p>Median number of internet providers (25/3 Mbps minimum): ' + e.features[0].properties.Count_providers_253min_median + '</p><p> Percent of students enrolled in lunch program: ' + e.features[0].properties.prcnt_enrolled_lunch + '</p><p>Enrollment: ' + e.features[0].properties.Enrollment + '</p>')
         .addTo(map);
         });
         
