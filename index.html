@@ -3,148 +3,41 @@
   <head>
     <meta charset='utf-8' />
     <title>Mississippi Center for Justice - Broadband accessibility</title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link href='https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css' rel='stylesheet'>
+    <script src='https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css" rel="stylesheet" />
     <script async defer src="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js"></script>
-
-    <style>
-        body { margin:0; padding:0; }
-
-        h2,
-h3 {
-  margin: 10px;
-  font-size: 1.2em;
-}
-
-h3 {
-  font-size: 1em;
-}
-
-p {
-  font-size: 0.85em;
-  margin: 10px;
-  text-align: left;
-}
-
-      #map { position:absolute; top:0; bottom:0; right: 0; width:60%; z-index:-1;}
-
-      /**
-* Set rules for how the map overlays
-* (title box) will be displayed on the page. */
-.map-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background: rgba(255, 255, 255, 0.8);
-  margin-left: 10px;
-  margin-bottom: 20px;
-  font-family: Arial, sans-serif;
-  overflow: auto;
-  border-radius: 3px;
-}
-
-.fcc-legend {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  background: rgba(255, 255, 255, 0.8);
-  margin-right: 20px;
-  margin-bottom: 30px;
-  font-family: Arial, sans-serif;
-  overflow: auto;
-  border-radius: 3px;
-}
-
-.bivar-legend {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: rgba(255, 255, 255, 0.8);
-  margin-right: 20px;
-  margin-top: 110px;
-  font-family: Arial, sans-serif;
-  overflow: auto;
-  border-radius: 3px;
-}
-
-#features {
-  top: 0;
-  margin-top: 20px;
-  width: 40%;
-}
- /* Popup styling */
-
- .mapboxgl-popup {
-      padding-bottom: 5px;
-    }
-
-        .mapboxgl-popup-content {
-        font: 400 15px/22px 'Source Sans Pro', 'Helvetica Neue', Sans-serif;
-        padding: 0;
-        width: 300px;
-              max-height: 250px;
-              overflow: auto;
-      }
-
-        .mapboxgl-popup-content-wrapper {
-          padding: 1%;
-        }
-
-        .mapboxgl-popup-content h3 {
-        background: #404040;
-        color: #fff;
-        margin: 0;
-        display: block;
-        padding: 10px;
-        border-radius: 3px 3px 0 0;
-        font-weight: 600;
-        margin-top: 0px;
-      }
-
-    .mapboxgl-popup-content h4 {
-        margin: 0;
-        display: block;
-        padding: 5px;
-        font-size: 12px;
-        font-weight: bold;
-      }
-
-    .mapboxgl-container {
-      cursor: pointer;
-    }
-
-    .mapboxgl-popup-content div {
-        padding: 10px;
-      }
-
-    .mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
-      margin-top: 3px;
-    }
-
-    .mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
-      border-bottom-color: #47d61b;
-    }
-
-    </style>
+    <link rel='stylesheet' href="style.css" />
   </head>
 
-</style>
-
 <body>
-    <div id="map"></div>
-    <div class="map-overlay" id="features">
-      <h2>Which school districts have the most students at risk for exclusion from distance learning?</h2>
-      <p>This map visualizes data on free and reduced lunch enrollment (as an indicator of household poverty) and data on the availability of internet providers (minimum speed of 25/3 Mbps).</p>
-      <p>Click on a school district for details on enrollment, school lunch program participation, and the average (median) number of internet providers across the district.</p>
-      <p><img src = "MS-map-legend.png" height=350px /></p>
-      <p>The school lunch data was divided into these classes because the majority of the data is on the high side of enrollment - there is only one district with lunch enrollment less than 40%. </p>
-      <p><b>Zoom in on the map to see details on internet provider availability at the census block level.</b>Explore this data in more detail at the <a href="https://broadbandmap.fcc.gov/#/"target="_blank">FCC Broadband map.</a></p>
-      <p><img src = "FCClegend_300.png"/></p>
-      <p><b>Sources:</b></p>
-      <p>School District data - <a href="https://projects.propublica.org/miseducation/district/2802970"target="_blank">ProPublica</a>. Internet providers - <a href="https://broadbandmap.fcc.gov/#/"target="_blank">FCC</a>. </p>
+  <div class='flex-parent viewport-full relative scroll-auto'>
+    <div class='flex-child w360-ml absolute static-ml left bottom scroll-auto'>
+        <div class='flex-parent flex-parent viewport-third bg-white'>
+            <div class='flex-child flex-child--grow'>
+                <div id="sidebarA"
+                    class="flex-parent flex-parent--column-ml theme">
+                    <p><b>Which school districts have the most students at risk for exclusion from distance learning?</b><br>
+                      <br>This map visualizes data on free and reduced lunch enrollment (as an indicator of household poverty) and data on the availability of internet providers (minimum speed of 25/3 Mbps).<br>
+                      <br>Click on a district for details on enrollment, lunch program participation, and the average (median) number of internet providers within the district.
+                      <br><img src = "MS-map-legend.png" width=380px />
+                      <br>The school lunch data was divided this way because the majority of districts have high enrollment - only one district has lunch enrollment less than 40%. Note: This analysis does not include data from private schools.<br>
+                      <br><b>Zoom in to see details on internet provider availability at the census block level.</b> Explore this data in more detail at the <a href="https://broadbandmap.fcc.gov/#/"target="_blank">FCC Broadband map.</a>
+                      <br><img src = "FCClegend_300.png" width=340px />
+                      <br><b>Sources:</b><br>School District data - <a href="https://projects.propublica.org/miseducation/district/2802970"target="_blank">ProPublica</a>.<br>Internet providers - <a href="https://broadbandmap.fcc.gov/#/"target="_blank">FCC</a>.</p>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class='flex-child flex-child--grow w-auto viewport-full-ml viewport-twothirds' id='map'>
+
+    </div>
+
+</div>
+
 
     <script>
       // define access token
